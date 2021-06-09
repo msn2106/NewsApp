@@ -8,12 +8,13 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 
-class NewsListAdapter(private val listener: NewsItemClicked): RecyclerView.Adapter<NewsViewHolder>() {
+class NewsListAdapter(private val listener: NewsItemClicked): RecyclerView.Adapter<NewsListAdapter.NewsViewHolder>() {
 
     private val items: ArrayList<News> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_news, parent, false)
+        val inflater = LayoutInflater.from(parent.context)
+        val view = inflater.inflate(R.layout.item_news, parent, false)
         val viewHolder = NewsViewHolder(view)
         view.setOnClickListener{
             listener.onItemClicked(items[viewHolder.adapterPosition])
@@ -38,13 +39,15 @@ class NewsListAdapter(private val listener: NewsItemClicked): RecyclerView.Adapt
 
         notifyDataSetChanged()
     }
+
+    class NewsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val titleView: TextView = itemView.findViewById(R.id.title)
+        val image: ImageView = itemView.findViewById(R.id.image)
+        val author: TextView = itemView.findViewById(R.id.author)
+    }
 }
 
-class NewsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    val titleView: TextView = itemView.findViewById(R.id.title)
-    val image: ImageView = itemView.findViewById(R.id.image)
-    val author: TextView = itemView.findViewById(R.id.author)
-}
+
 
 interface NewsItemClicked {
     fun onItemClicked(item: News)
